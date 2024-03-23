@@ -41,12 +41,12 @@ with gr.Blocks() as demo:
                 )
                 upload_btn = gr.UploadButton(
                     "📁 Upload files",
-                    file_types=[".pdf", ".doc"],
+                    file_types=[".pdf"],
                     file_count="multiple",
                 )
                 upload_btn_for_preprocess = gr.UploadButton(
                     "📁 Preprocess files",
-                    file_types=[".pdf", ".doc"],
+                    file_types=[".pdf"],
                     file_count="multiple",
                 )
                 temperature_bar = gr.Slider(
@@ -66,6 +66,7 @@ with gr.Blocks() as demo:
                     ],
                     value="Preprocessed doc",
                 )
+                clear_button = gr.ClearButton([input_txt, chatbot])
 
             file_msg = upload_btn.upload(
                 fn=UploadFile.process_uploaded_files,
