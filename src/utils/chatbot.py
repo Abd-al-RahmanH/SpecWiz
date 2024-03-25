@@ -88,10 +88,10 @@ class ChatBot:
         print(prompt)
         parameters = TextGenerationParameters(
             decoding_method=DecodingMethod.SAMPLE,
-            max_new_tokens=4090,
+            max_new_tokens=APPCFG.max_token,
             min_new_tokens=30,
-            temperature=0.7,
-            top_k=3,
+            temperature=APPCFG.temperature,
+            top_k=APPCFG.k,
             top_p=1,
         )
         credentials = Credentials(
@@ -99,7 +99,7 @@ class ChatBot:
             api_endpoint="https://bam-api.res.ibm.com/v2/text/chat?version=2024-03-19",
         )
         client = Client(credentials=credentials)
-        model_id = "meta-llama/llama-2-70b-chat"
+        model_id = APPCFG.genai_model_id
         response = client.text.chat.create(
             model_id=model_id,
             messages=[

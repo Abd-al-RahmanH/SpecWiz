@@ -18,7 +18,7 @@ def count_num_tokens(text: str) -> int:
 
     responses = list(
         client.text.tokenization.create(
-            model_id="google/flan-ul2",
+            model_id=CONFIG.genai_model_id,
             input=[text],
             parameters=TextTokenizationParameters(
                 return_options=TextTokenizationReturnOptions(

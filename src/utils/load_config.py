@@ -15,6 +15,8 @@ class LoadConfig:
 
         # LLM configs
         self.genai_api_key = app_config["llm_config"]["genai_api_key"]
+        self.genai_model_id = app_config["llm_config"]["genai_model_id"]
+        self.max_token = app_config["llm_config"]["max_token"]
         self.llm_system_role = app_config["llm_config"]["llm_system_role"]
         self.persist_directory = str(
             here(app_config["directories"]["persist_directory"])

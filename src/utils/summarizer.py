@@ -60,10 +60,10 @@ class Summarizer:
     def get_llm_response(temperature: float, llm_system_role: str, prompt: str):
         parameters = TextGenerationParameters(
             decoding_method=DecodingMethod.SAMPLE,
-            max_new_tokens=4090,
+            max_new_tokens=CONFIG.max_token,
             min_new_tokens=30,
             temperature=temperature,
-            top_k=3,
+            top_k=CONFIG.k,
             top_p=1,
         )
         credentials = Credentials(
@@ -71,7 +71,7 @@ class Summarizer:
             api_endpoint="https://bam-api.res.ibm.com/v2/text/chat?version=2024-03-19",
         )
         client = Client(credentials=credentials)
-        model_id = "meta-llama/llama-2-70b-chat"
+        model_id = CONFIG.genai_model_id
         response = client.text.chat.create(
             model_id=model_id,
             messages=[
