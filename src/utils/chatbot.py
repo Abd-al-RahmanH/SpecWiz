@@ -27,24 +27,21 @@ URL = "https://github.com/KirtiJha/RAG-ask-doc"
 hyperlink = f"[ASK-DOC user guideline]({URL})"
 
 
-credentials = Credentials(api_key=APPCFG.genai_api_key)
-client = Client(credentials=credentials)
-embeddings = LangChainEmbeddingsInterface(
-    client=client,
-    model_id="sentence-transformers/all-minilm-l6-v2",
-    parameters=TextEmbeddingParameters(truncate_input_tokens=True),
-)
-
-
 class ChatBot:
     @staticmethod
     def respond(
-        chatbot: List,
-        message: str,
-        data_type: str = "Preprocessed doc",
-        temperature: float = 0.0,
+        message: str, genai_api_key: str, data_type: str = "Preprocessed Doc"
     ) -> Tuple:
-        if data_type == "Preprocessed doc":
+
+        credentials = Credentials(api_key=genai_api_key)
+        client = Client(credentials=credentials)
+        embeddings = LangChainEmbeddingsInterface(
+            client=client,
+            model_id="sentence-transformers/all-minilm-l6-v2",
+            parameters=TextEmbeddingParameters(truncate_input_tokens=True),
+        )
+        result = []
+        if data_type == "Preprocessed Doc":
             # directories
             if os.path.exists(APPCFG.persist_directory):
                 vectordb = Chroma(
@@ -52,28 +49,22 @@ class ChatBot:
                     embedding_function=embeddings,
                 )
             else:
-                chatbot.append(
-                    (
-                        message,
-                        f"VectorDB does not exist. Please first execute the 'Preprocess files'. For further information please visit {hyperlink}.",
-                    )
+                result.append(
+                    "VectorDB does not exist. Please first execute the 'Preprocess files'. For further information please visit {hyperlink}."
                 )
-                return "", chatbot, None
+                return result
 
-        elif data_type == "Upload doc: Process for RAG":
+        elif data_type == "Uploaded Doc":
             if os.path.exists(APPCFG.custom_persist_directory):
                 vectordb = Chroma(
                     persist_directory=APPCFG.custom_persist_directory,
                     embedding_function=embeddings,
                 )
             else:
-                chatbot.append(
-                    (
-                        message,
-                        f"No file was uploaded. Please first upload your files using the 'upload' button.",
-                    )
+                result.append(
+                    "No file was uploaded. Please first upload your files using the 'upload' button."
                 )
-                return "", chatbot, None
+                return result
 
         docs = vectordb.similarity_search(message, k=APPCFG.k)
         print(docs)
@@ -81,7 +72,7 @@ class ChatBot:
         retrieved_content = ChatBot.clean_references(docs)
         # Memory: previous two Q&A pairs
         chat_history = (
-            f"Chat history:\n {str(chatbot[-APPCFG.number_of_q_a_pairs:])}\n\n"
+            f"Chat history:\n {str(result[-APPCFG.number_of_q_a_pairs:])}\n\n"
         )
         prompt = f"{chat_history}{retrieved_content}{question}"
         print("========================")
@@ -95,7 +86,7 @@ class ChatBot:
             top_p=1,
         )
         credentials = Credentials(
-            api_key=APPCFG.genai_api_key,
+            api_key=genai_api_key,
             api_endpoint="https://bam-api.res.ibm.com/v2/text/chat?version=2024-03-19",
         )
         client = Client(credentials=credentials)
@@ -110,10 +101,10 @@ class ChatBot:
             ],
             parameters=parameters,
         )
-        chatbot.append((message, response.results[0].generated_text))
+        result = response.results[0].generated_text
         time.sleep(2)
 
-        return "", chatbot, retrieved_content
+        return result
 
     @staticmethod
     def clean_references(documents: List) -> str:

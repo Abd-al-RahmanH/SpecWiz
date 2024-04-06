@@ -8,10 +8,11 @@ CONFIG = LoadConfig()
 
 class UploadDataManually:
     @staticmethod
-    def upload_data_manually(files_dir: List, chatbot: List) -> Tuple:
+    def upload_data_manually(files_dir: List, genai_api_key: str) -> Tuple:
         print(files_dir)
         prepare_vectordb_instance = PrepareVectorDB(
             data_directory=files_dir,
+            genai_api_key=genai_api_key,
             persist_directory=CONFIG.persist_directory,
             chunk_size=CONFIG.chunk_size,
             chunk_overlap=CONFIG.chunk_overlap,
@@ -22,8 +23,8 @@ class UploadDataManually:
             print(f"VectorDB already exists in {CONFIG.persist_directory}")
             prepare_vectordb_instance.append_to_vector_db()
             print(f"File successfully added in {CONFIG.persist_directory}")
-        chatbot.append((" ", "Uploaded files are processed. Please ask your question"))
-        return "", chatbot
+        result = "Uploaded files are processed. Please ask your question"
+        return result
 
 
 # if __name__ == "__main__":

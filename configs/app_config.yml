@@ -21,7 +21,6 @@ llm_config:
     "
     temperature: 0.0
     max_token: 4090
-    genai_api_key: {IBM_Watsox_API_Key}
     genai_model_id: meta-llama/llama-2-70b-chat
 
 summarizer_config:

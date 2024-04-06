@@ -25,6 +25,7 @@ class Summarizer:
     @staticmethod
     def summarize_the_pdf(
         file_dir: str,
+        genai_api_key: str,
         max_final_token: int,
         token_threshold: int,
         temperature: float,
@@ -48,16 +49,24 @@ class Summarizer:
         for chunk in text_chunk:
             prompt = chunk
             full_summary += Summarizer.get_llm_response(
-                temperature, summarizer_llm_system_role, prompt=prompt
+                genai_api_key, temperature, summarizer_llm_system_role, prompt=prompt
             )
-        print("\nFull summary token length:", count_num_tokens(full_summary))
+        print(
+            "\nFull summary token length:",
+            count_num_tokens(full_summary, genai_api_key),
+        )
         final_summary = Summarizer.get_llm_response(
-            temperature, final_summarizer_llm_system_role, prompt=full_summary
+            genai_api_key,
+            temperature,
+            final_summarizer_llm_system_role,
+            prompt=full_summary,
         )
         return final_summary
 
     @staticmethod
-    def get_llm_response(temperature: float, llm_system_role: str, prompt: str):
+    def get_llm_response(
+        genai_api_key: str, temperature: float, llm_system_role: str, prompt: str
+    ):
         parameters = TextGenerationParameters(
             decoding_method=DecodingMethod.SAMPLE,
             max_new_tokens=CONFIG.max_token,
@@ -67,7 +76,7 @@ class Summarizer:
             top_p=1,
         )
         credentials = Credentials(
-            api_key=CONFIG.genai_api_key,
+            api_key=genai_api_key,
             api_endpoint="https://bam-api.res.ibm.com/v2/text/chat?version=2024-03-19",
         )
         client = Client(credentials=credentials)

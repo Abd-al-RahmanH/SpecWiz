@@ -16,6 +16,7 @@ class PrepareVectorDB:
     def __init__(
         self,
         data_directory: str,
+        genai_api_key: str,
         persist_directory: str,
         chunk_size: int,
         chunk_overlap: int,
@@ -28,7 +29,8 @@ class PrepareVectorDB:
         )
         self.data_directory = data_directory
         self.persist_directory = persist_directory
-        self.embedding = self.__create_genai_embedding(gen_ai_key=CONFIG.genai_api_key)
+        self.genai_api_key = genai_api_key
+        self.embedding = self.__create_genai_embedding(gen_ai_key=genai_api_key)
 
     def __create_genai_embedding(self, gen_ai_key: str):
         credentials = Credentials(api_key=gen_ai_key)

@@ -9,9 +9,9 @@ from utils.load_config import LoadConfig
 CONFIG = LoadConfig()
 
 
-def count_num_tokens(text: str) -> int:
+def count_num_tokens(text: str, genai_api_key: str) -> int:
     credentials = Credentials(
-        api_key=CONFIG.genai_api_key,
+        api_key=genai_api_key,
         api_endpoint="https://bam-api.res.ibm.com/v2/text/tokenization?version=2024-01-10",
     )
     client = Client(credentials=credentials)

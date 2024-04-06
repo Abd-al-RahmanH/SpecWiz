@@ -14,7 +14,6 @@ class LoadConfig:
             app_config = yaml.load(cfg, Loader=yaml.FullLoader)
 
         # LLM configs
-        self.genai_api_key = app_config["llm_config"]["genai_api_key"]
         self.genai_model_id = app_config["llm_config"]["genai_model_id"]
         self.max_token = app_config["llm_config"]["max_token"]
         self.llm_system_role = app_config["llm_config"]["llm_system_role"]
@@ -48,7 +47,7 @@ class LoadConfig:
 
         # clean up the upload doc vectordb if it exists
         self.create_directory(self.persist_directory)
-        self.remove_directory(self.custom_persist_directory)
+        # self.remove_directory(self.custom_persist_directory)
 
     def create_directory(self, directory_path: str):
         if not os.path.exists(directory_path):
@@ -63,5 +62,5 @@ class LoadConfig:
                 )
             except OSError as e:
                 print(f"Error: {e}")
-        else:
-            print(f"The directory '{directory_path}' does not exist.")
+        # else:
+        #     print(f"The directory '{directory_path}' does not exist.")
