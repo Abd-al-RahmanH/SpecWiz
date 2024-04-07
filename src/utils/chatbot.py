@@ -1,4 +1,3 @@
-import gradio as gr
 import time
 import os
 from langchain.vectorstores import Chroma
