@@ -53,7 +53,7 @@ class ChatBot:
                 )
                 return result
 
-        elif data_type == "Uploaded Doc":
+        else:
             if os.path.exists(APPCFG.custom_persist_directory):
                 vectordb = Chroma(
                     persist_directory=APPCFG.custom_persist_directory,
