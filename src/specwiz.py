@@ -1,3 +1,8 @@
+__import__("pysqlite3")
+import sys
+
+sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
+
 import streamlit as st
 from utils.upload_file import UploadFile
 from utils.upload_data_manually import UploadDataManually
