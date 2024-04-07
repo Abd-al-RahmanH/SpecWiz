@@ -14,7 +14,12 @@ load_dotenv()
 
 CONFIG = LoadConfig()
 
-st.set_page_config(page_title="SpecWiz", page_icon="images/spec.png")
+st.set_page_config(
+    page_title="SpecWiz",
+    page_icon="images/spec.png",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
 st.image("images/specwiz.png", width=200)
 
 
