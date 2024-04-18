@@ -79,10 +79,10 @@ def main():
         st.title("Welcome to SpecWiz!")
 
         st.markdown(
-            "SpecWiz is an advanced platform built using IBM WatsonX."
-            "It not only answers questions related to preprocessed ARB Technical Specifications, but also allows you to upload documents on the fly and chat with them."
-            "It also summarizes documents."
-            "Enter your IBM WatsonX API Key, and let SpecWiz hatch profound insights from documents, all powered by cutting-edge IBM WatsonX Gen AI"
+            "Introducing SpecWiz, a sophisticated platform leveraging IBM WatsonX technology."
+            " SpecWiz is designed to provide comprehensive assistance with ARB Technical Specifications."
+            " Not only does it offer responsive answers to queries related to preprocessed specifications, but it also facilitates seamless document uploads for real-time analysis and interaction."
+            " Moreover, SpecWiz features a robust document summarization capability, ensuring efficient information extraction. Simply input your IBM WatsonX API Key, and unlock a world of profound insights derived from documents, all powered by the cutting-edge IBM WatsonX Gen AI."
         )
 
         rag_with_dropdown = st.selectbox(
@@ -114,7 +114,7 @@ def main():
         elif rag_with_dropdown == "Uploaded Doc":
             uploaded_docs = st.file_uploader("Upload files", accept_multiple_files=True)
             if st.button("Upload"):
-                with st.spinner("Processing your ADB documents"):
+                with st.spinner("Processing your documents"):
                     doc_dir = []
                     for doc in uploaded_docs:
                         temp_dir = tempfile.mkdtemp()
@@ -147,8 +147,8 @@ def main():
             st.markdown(message["content"])
 
     if rag_with_dropdown == "Give Full Doc Summary":
-        if st.sidebar.button("Summarize ADB Document"):
-            prompt = "Please summarize my ADB document"
+        if st.sidebar.button("Summarize Document"):
+            prompt = "Please summarize my document"
             st.session_state.messages.append({"role": "user", "content": prompt})
 
             with st.chat_message("user", avatar="images/user.png"):
@@ -156,9 +156,7 @@ def main():
 
             # if st.session_state.messages[-1]["role"] != "assistant":
             with st.chat_message("assistant", avatar="images/spec.png"):
-                with st.spinner(
-                    "Summarizing ADB document. This will not take long ...."
-                ):
+                with st.spinner("Summarizing document. This will not take long ...."):
                     doc_dir = []
                     for doc in summarize_doc:
                         temp_dir = tempfile.mkdtemp()
@@ -188,7 +186,7 @@ def main():
 
     st.sidebar.button("Clear Chat History", on_click=clear_chat_history)
 
-    if prompt := st.chat_input("Ask a question about your ADB documents"):
+    if prompt := st.chat_input("Ask a question about your documents"):
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user", avatar="images/user.png"):
             st.write(prompt)

@@ -166,3 +166,4 @@ data/vectordb/processed/chroma
 
 configs/app_config.yml
 configs/app_config.yml
+.sfdx

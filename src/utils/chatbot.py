@@ -22,8 +22,8 @@ from genai.schema import (
 )
 
 APPCFG = LoadConfig()
-URL = "https://github.com/KirtiJha/RAG-ask-doc"
-hyperlink = f"[ASK-DOC user guideline]({URL})"
+URL = "https://github.com/KirtiJha/SpecWiz.git"
+hyperlink = f"[SpecWiz user guideline]({URL})"
 
 
 class ChatBot:
