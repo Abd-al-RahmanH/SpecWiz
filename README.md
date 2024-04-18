@@ -1,6 +1,9 @@
-# Ask-DOC: Retrieval Augmented generation (RAG) chatbot using IBM Watsox AI Model, Langchain, ChromaDB, and Gradio
+<div align="left">
+  <img src="images/specwiz.png" alt="SpecWiz Logo" width="200">
+</div>
+# SpecWiz: Retrieval Augmented generation (RAG) chatbot using IBM Watsox AI Model, Langchain, ChromaDB, and Streamlit
 
-**ASK-DOC** supports PDF files.
+**SpecWiz** supports PDF files.
 
 **The chatbot offers versatile usage through three different methods:**
 
@@ -8,14 +11,13 @@
 2. **Real-time Uploads:** Easily upload documents during your chat sessions, allowing the chatbot to process and respond to the content on-the-fly.
 3. **Summarization Requests:** Request the chatbot to provide a comprehensive summary of an entire PDF or document in a single interaction, streamlining information retrieval.
 
-To employ any of these methods, simply configure the appropriate settings in the "RAG with" dropdown menu within the chatbot interface. Tailor your interactions with documents to suit your preferences and needs efficiently.
+To employ any of these methods, simply configure the appropriate settings in the "Chat with" dropdown menu within the chatbot interface. Tailor your interactions with documents to suit your preferences and needs efficiently.
 
-- The project provides guidance on configuring various settings, such as adjusting the GPT model's temperature for optimal performance.
-- The user interface is crafted with gradio, ensuring an intuitive and user-friendly experience.
+- The project provides guidance on configuring various settings, such as adjusting the WatsonX model's temperature for optimal performance.
+- The user interface is crafted with Streamlt, ensuring an intuitive and user-friendly experience.
 - The model incorporates memory, retaining user Q&As for an enhanced and personalized user experience.
-- For each response, you can access the retrieved content along with the option to view the corresponding PDF.
 
-## ASK-DOC User Interface
+## SpecWiz User Interface
 
 <div align="center">
   <img src="images/UI.png" alt="Ask-DOC UI">
@@ -47,7 +49,7 @@ To run the projects, you will need to install the required libraries. Follow the
 1. Clone the repository and navigate to the project directory.
 
 ```
-git clone https://github.com/KirtiJha/RAG-ask-doc.git
+git clone https://github.com/KirtiJha/SpecWiz.git
 cd <yourproject>
 ```
 
@@ -70,14 +72,10 @@ pip install -r requirements.txt
 cd <to project directory>
 ```
 
-5. Open configs/app_config.yml and fill your IBM WatsonX API Key
-
-```
-genai_api_key: <IBM WatsonX API Key>
-```
+5. Open configs/app_config.yml and fill your model configurations
 
 6. Run the application
 
 ```
-python askdoc.py
+streamlit run src/specwiz.py
 ```
