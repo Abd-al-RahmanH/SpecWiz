@@ -143,7 +143,7 @@ def main():
     # display chat messages from history on app rerun
     for message in st.session_state.messages:
 
-        with st.chat_message(message["role"], avatar="images/spec.png"):
+        with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
     if rag_with_dropdown == "Give Full Doc Summary":
@@ -151,11 +151,11 @@ def main():
             prompt = "Please summarize my document"
             st.session_state.messages.append({"role": "user", "content": prompt})
 
-            with st.chat_message("user", avatar="images/user.png"):
+            with st.chat_message("user"):
                 st.write(prompt)
 
             # if st.session_state.messages[-1]["role"] != "assistant":
-            with st.chat_message("assistant", avatar="images/spec.png"):
+            with st.chat_message("assistant"):
                 with st.spinner("Summarizing document. This will not take long ...."):
                     doc_dir = []
                     for doc in summarize_doc:
@@ -188,12 +188,12 @@ def main():
 
     if prompt := st.chat_input("Ask a question about your documents"):
         st.session_state.messages.append({"role": "user", "content": prompt})
-        with st.chat_message("user", avatar="images/user.png"):
+        with st.chat_message("user"):
             st.write(prompt)
 
         # Generate a new response if the last message is not from the assistant
         # if st.session_state.messages[-1]["role"] != "assistant":
-        with st.chat_message("assistant", avatar="images/spec.png"):
+        with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
                 response = ChatBot.respond(prompt, genai_api_key, rag_with_dropdown)
                 placeholder = st.empty()
