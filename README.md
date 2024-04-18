@@ -1,7 +1,10 @@
 <div align="left">
   <img src="images/specwiz.png" alt="SpecWiz Logo" width="200">
 </div>
-# SpecWiz: Retrieval Augmented generation (RAG) chatbot using IBM Watsox AI Model, Langchain, ChromaDB, and Streamlit
+
+## SpecWiz: Retrieval Augmented generation (RAG) chatbot using IBM Watsox AI Model, Langchain, ChromaDB, and Streamlit
+
+SpecWiz is a cutting-edge Retrieval Augmented Generation (RAG) chatbot designed to revolutionize how you engage with documents. Leveraging the power of IBM WatsonX AI Model, Langchain, ChromaDB, and Streamlit, SpecWiz offers a seamless and intuitive platform for exploring and interacting with PDF files.
 
 **SpecWiz** supports PDF files.
 
