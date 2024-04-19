@@ -19,12 +19,12 @@ llm_config:
     # User question:\n
     New question
     "
-    temperature: 0.0
-    max_token: 4090
-    genai_model_id: meta-llama/llama-2-70b-chat
+    temperature: 0.5
+    max_token: 2000
+    genai_model_id: meta-llama/llama-3-70b-instruct
 
 summarizer_config:
-    max_final_token: 3000
+    max_final_token: 2000
     character_overlap: 100
     token_threshold: 0
     summarizer_llm_system_role: "You are an expert text summarizer. You will receive a text and your task is to summarize and keep all the key information.\

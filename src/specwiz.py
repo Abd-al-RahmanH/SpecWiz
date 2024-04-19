@@ -184,7 +184,7 @@ def main():
             }
         ]
 
-    st.sidebar.button("Clear Chat History", on_click=clear_chat_history)
+    st.sidebar.button("Clear Chat History", on_click=clear_chat_history, type="primary")
 
     if prompt := st.chat_input("Ask a question about your documents"):
         st.session_state.messages.append({"role": "user", "content": prompt})
