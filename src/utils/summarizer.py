@@ -73,7 +73,7 @@ class Summarizer:
             min_new_tokens=30,
             temperature=temperature,
             top_k=CONFIG.k,
-            top_p=1,
+            top_p=0.9,
         )
         credentials = Credentials(
             api_key=genai_api_key,

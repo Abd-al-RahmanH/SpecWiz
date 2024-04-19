@@ -82,7 +82,7 @@ class ChatBot:
             min_new_tokens=30,
             temperature=APPCFG.temperature,
             top_k=APPCFG.k,
-            top_p=1,
+            top_p=0.9,
         )
         credentials = Credentials(
             api_key=genai_api_key,
