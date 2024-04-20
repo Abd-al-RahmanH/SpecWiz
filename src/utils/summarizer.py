@@ -37,7 +37,8 @@ class Summarizer:
         docs = []
         docs.extend(PyPDFLoader(file_dir).load())
         print(f"Document length: {len(docs)}")
-        max_summarizer_output_token = int(max_final_token / len(docs)) - token_threshold
+        # max_summarizer_output_token = int(max_final_token / len(docs)) - token_threshold
+        max_summarizer_output_token = max_final_token - token_threshold
         full_summary = ""
         counter = 1
         print("Generating the summary..")
