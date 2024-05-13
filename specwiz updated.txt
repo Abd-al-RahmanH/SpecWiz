@@ -1,0 +1,133 @@
+__import__("pysqlite3")
+import sys
+
+sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
+import streamlit as st
+from utils.upload_data_manually import UploadDataManually
+from utils.upload_file import UploadFile
+from utils.chatbot import ChatBot
+import tempfile, os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+CONFIG = LoadConfig()
+
+st.set_page_config(
+    page_title="SpecWiz",
+    page_icon="images/spec.png",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
+st.image("images/specwiz.png", width=200)
+
+
+# Define a function to remove the directory when a new session starts
+def remove_directory_on_session_start():
+    CONFIG.remove_directory(CONFIG.custom_persist_directory)
+
+
+# Get a handle to the session state
+session_state = st.session_state
+
+# Check if the session state variable for session start exists
+if "session_start" not in session_state:
+    # If it doesn't exist, set it to True and remove the directory
+    session_state.session_start = True
+    remove_directory_on_session_start()
+
+
+def main():
+    genai_api_key_placeholder = st.empty()
+    genai_api_key = genai_api_key_placeholder.text_input(
+        "IBM WatsonX API Key", type="password"
+    )
+    if not genai_api_key:
+        st.info("Please add your IBM WatsonX API key to continue.")
+        st.stop()
+    genai_api_key_placeholder.empty()
+
+    # ... other code ... (remove references to Box)
+
+    with st.sidebar:
+
+        st.image("images/specwiz.png", width=300)
+        st.title("Welcome to SpecWiz!")
+
+        st.markdown(
+            "Introducing SpecWiz, a sophisticated platform leveraging IBM WatsonX technology."
+            " SpecWiz is designed to provide comprehensive assistance with ARB Technical Specifications."
+            " Not only does it offer responsive answers to queries related to preprocessed specifications, but it also facilitates seamless document uploads for real-time analysis and interaction."
+            " Moreover, SpecWiz features a robust document summarization capability, ensuring efficient information extraction. Simply input your IBM WatsonX API Key, and unlock a world of profound insights derived from documents, all powered by the cutting-edge IBM WatsonX Gen AI."
+        )
+
+        rag_with_dropdown = st.selectbox(
+            "Chat with",
+            (
+                "Preprocessed Doc",
+                "Uploaded Doc",
+                "Give Full Doc Summary",
+            ),
+        )
+        if rag_with_dropdown == "Uploaded Doc":
+            uploaded_docs = st.file_uploader("Upload files", accept_multiple_files=True)
+            if st.button("Upload"):
+                with st.spinner("Processing your documents"):
+                    doc_dir = []
+                    for doc in uploaded_docs:
+                        temp_dir = tempfile.mkdtemp()
+                        path = os.path.join(temp_dir, doc.name)
+                        with open(path, "wb") as f:
+                            f.write(doc.getvalue())
+                        doc_dir.append(path)
+                    file_msg = UploadFile.process_uploaded_files(
+                        doc_dir, genai_api_key, rag_with_dropdown
+                    )
+                    st.success(file_msg)
+
+        else:
+            summarize_doc = st.file_uploader(
+                "Summarize File", accept_multiple_files=True
+            )
+
+    # Store LLM generated responses
+    if "messages" not in st.session_state.keys():
+        st.session_state.messages = [
+            {
+                "role": "assistant",
+                "content": "Hello. I am SpecWiz - Your personalized architectural assistant! How may I assist you today?",
+            }
+        ]
+
+    # display chat messages from history on app rerun
+    for message in st.session_state.messages:
+
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+
+    if rag_with_dropdown == "Give Full Doc Summary":
+        if st.sidebar.button("Summarize Document"):
+            prompt = "Please summarize my document"
+            st.session_state.messages.append({"role": "user", "content": prompt})
+
+            with st.chat_message("user"):
+                st.write(prompt)
+
+        # Generate a new response if the last message is not from the assistant
+        # if st.session_state.messages[-1]["role"] != "assistant":
+        with st.chat_message("assistant"):
+            with st.spinner("Thinking..."):
+                response = ChatBot.respond(prompt, genai_api_key, rag_with_dropdown)
+                placeholder = st.empty()
+                full_response = ""
+                for item in response:
+                    full_response += item
+                    placeholder.markdown(full_response)
+                placeholder.markdown(full_response)
+        message = {"role": "assistant", "content": full_response}
+        st.session_state.messages.append(message)
+
+
+if __name__ == "__main__":
+    main()
+
